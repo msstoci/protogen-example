@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package user;
+option go_package = "./user";
+
+import "google/api/annotations.proto";
+import "google/protobuf/descriptor.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "validate/validate.proto";
+
+service UserService {
+    rpc Register(RegisterRequest) returns (RegisterResponse) {
+        option (google.api.http) = {
+            post: "/v1/register"
+            body: "*"  
+        };
+
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+			summary: "Register user";
+			operation_id: "RegisterUser";
+			tags: "UserService";
+		};
+    }
+}
+
+message RegisterRequest {
+    string name = 1 [(validate.rules).string = {
+        min_len: 2,
+        max_len: 30
+     }];
+    string phone = 2 [(validate.rules).string = {
+        min_len: 9,
+        max_len: 20
+    }];
+    int64 district_id = 3; 
+    string point_id = 4 [(validate.rules).string = {
+        min_len: 1,
+        max_len: 52
+    }];
+    string commodity_id = 5 [(validate.rules).string = {
+        min_len: 1,
+        max_len: 15
+    }];
+    int64 active_ponds = 6;
+    string birth_date = 7;
+    string otp_code = 8 [(validate.rules).string = {
+        min_len: 4,
+        max_len: 6
+     }];
+    string referral_code = 9;
+    string postal_address = 10 [(validate.rules).string = {
+        min_len: 5,
+    }];
+}
+
+message RegisterResponse {
+    string token = 1;
+    string message = 2;
+    bool success  = 3;
+}
