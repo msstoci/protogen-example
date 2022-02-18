@@ -1,4 +1,4 @@
-module gitlab.com/msstoci/protogen-example
+module github.com/msstoci/protogen-example
 
 go 1.17
 
